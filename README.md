@@ -68,4 +68,125 @@ Your work will be automatically submitted when you push to your GitHub Classroom
 - [React Documentation](https://react.dev/)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Vite Documentation](https://vitejs.dev/guide/)
-- [React Router Documentation](https://reactrouter.com/) 
+- [React Router Documentation](https://reactrouter.com/)
+
+**src/api/api.js**
+export async function fetchPosts() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5");
+  if (!res.ok) throw new Error("Failed to fetch posts");
+  return res.json();
+}
+**Components
+src/components/Button.jsx**
+export default function Button({ children, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+    >
+      {children}
+    </button>
+  );
+}
+**src/components/Card.jsx**
+export default function Card({ title, body }) {
+  return (
+    <div className="p-4 border rounded shadow hover:shadow-lg transition bg-white">
+      <h2 className="text-lg font-bold mb-2">{title}</h2>
+      <p className="text-gray-700">{body}</p>
+    </div>
+  );
+}
+**src/components/Navbar.jsx**
+export default function Navbar() {
+  return (
+    <nav className="bg-gray-800 text-white p-4 flex justify-between">
+      <span className="font-bold">Nones</span>
+     <div>
+        <a href="#" className="px-2 hover:underline">Home</a>
+        <a href="#" className="px-2 hover:underline">About</a>
+      </div>
+    </nav>
+  );
+}
+**Custom hook
+src/hooks/useFetch.js**
+import { useState, useEffect } from "react";
+
+export default function useFetch(fetchFunction) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFunction().then(res => {
+      setData(res);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, [fetchFunction]);
+
+  return { data, loading };
+}
+**Context
+src/context/AppContext.jsx**
+import { createContext, useState } from "react";
+
+export const AppContext = createContext();
+
+export default function AppProvider({ children }) {
+  const [user, setUser] = useState({ name: "John Doe" });
+
+  return (
+    <AppContext.Provider value={{ user, setUser }}>
+      {children}
+    </AppContext.Provider>
+  );
+}
+ **Page
+src/pages/Home.jsx**
+import useFetch from "../hooks/useFetch";
+import { fetchPosts } from "../api/api";
+import Card from "../components/Card";
+import Button from "../components/Button";
+
+export default function Home() {
+  const { data: posts, loading } = useFetch(fetchPosts);
+
+  if (loading) return <p className="p-4">Loading posts...</p>;
+
+  return (
+    <div className="p-4 grid gap-4">
+      {posts.map(post => (
+        <Card key={post.id} title={post.title} body={post.body} />
+      ))}
+      <Button onClick={() => alert("Clicked!")}>Click Me</Button>
+    </div>
+  );
+}
+**App entry point
+src/App.jsx**
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import AppProvider from "./context/AppContext";
+
+export default function App() {
+  return (
+    <AppProvider>
+      <div className="min-h-screen bg-gray-100">
+        <Navbar />
+        <Home />
+      </div>
+    </AppProvider>
+  );
+}
+**Vite entry point
+src/main.jsx**
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css'; // Make sure Tailwind CSS is imported
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
