@@ -70,6 +70,7 @@ Your work will be automatically submitted when you push to your GitHub Classroom
 - [Vite Documentation](https://vitejs.dev/guide/)
 - [React Router Documentation](https://reactrouter.com/)
 
+**app link;https://rainbow-meerkat-9b415b.netlify.app**
 **src/api/api.js**
 
 export async function fetchPosts() {
