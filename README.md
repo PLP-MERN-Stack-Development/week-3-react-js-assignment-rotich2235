@@ -71,13 +71,16 @@ Your work will be automatically submitted when you push to your GitHub Classroom
 - [React Router Documentation](https://reactrouter.com/)
 
 **src/api/api.js**
+
 export async function fetchPosts() {
   const res = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5");
   if (!res.ok) throw new Error("Failed to fetch posts");
   return res.json();
 }
+
 **Components
 src/components/Button.jsx**
+
 export default function Button({ children, onClick }) {
   return (
     <button
@@ -88,7 +91,9 @@ export default function Button({ children, onClick }) {
     </button>
   );
 }
+
 **src/components/Card.jsx**
+
 export default function Card({ title, body }) {
   return (
     <div className="p-4 border rounded shadow hover:shadow-lg transition bg-white">
@@ -97,7 +102,9 @@ export default function Card({ title, body }) {
     </div>
   );
 }
+
 **src/components/Navbar.jsx**
+
 export default function Navbar() {
   return (
     <nav className="bg-gray-800 text-white p-4 flex justify-between">
@@ -109,8 +116,10 @@ export default function Navbar() {
     </nav>
   );
 }
+
 **Custom hook
 src/hooks/useFetch.js**
+
 import { useState, useEffect } from "react";
 
 export default function useFetch(fetchFunction) {
@@ -126,8 +135,10 @@ export default function useFetch(fetchFunction) {
 
   return { data, loading };
 }
+
 **Context
 src/context/AppContext.jsx**
+
 import { createContext, useState } from "react";
 
 export const AppContext = createContext();
@@ -141,8 +152,10 @@ export default function AppProvider({ children }) {
     </AppContext.Provider>
   );
 }
+
  **Page
 src/pages/Home.jsx**
+
 import useFetch from "../hooks/useFetch";
 import { fetchPosts } from "../api/api";
 import Card from "../components/Card";
@@ -162,8 +175,10 @@ export default function Home() {
     </div>
   );
 }
+
 **App entry point
 src/App.jsx**
+
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import AppProvider from "./context/AppContext";
@@ -178,8 +193,10 @@ export default function App() {
     </AppProvider>
   );
 }
+
 **Vite entry point
 src/main.jsx**
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
